@@ -1,9 +1,9 @@
 <?php
 /**
  * Dropdown menu for access to groups and invitations - refreshes via ajax
- * 
+ *
  */
- 
+
  elgg_register_event_handler('init', 'system', 'yourgroups_init');
 
 /**
@@ -14,7 +14,7 @@
 function yourgroups_init () {
     if (elgg_is_logged_in())
     {
-        elgg_extend_view('css/elgg', 'yourgroups/css');
+        elgg_extend_view('elgg.css', 'yourgroups/css');
         // Add hidden popup module to topbar
         elgg_extend_view('page/elements/topbar', 'yourgroups/popup');
         elgg_require_js('yourgroups/yourgroups');
@@ -22,7 +22,7 @@ function yourgroups_init () {
         elgg_register_plugin_hook_handler('register', 'menu:topbar', 'yourgroups_topbar_menu_setup');
     }
 }
- 
+
 /**
  * Add group menu icon to topbar menu
  *
@@ -37,7 +37,7 @@ function yourgroups_init () {
 function yourgroups_topbar_menu_setup ($hook, $type, $return, $params) {
 
     $viewer = elgg_get_logged_in_user_entity();
-    $groups = $viewer->getGroups(null,0);
+    $groups = $viewer->getGroups(array('limit'=>0),0);
     $invitation_count = count(groups_get_invited_groups($viewer->guid, true));
     $count = count($groups);
     $tooltip = elgg_echo("yourgroups:tooltip", array($count));
@@ -51,8 +51,8 @@ function yourgroups_topbar_menu_setup ($hook, $type, $return, $params) {
     }
     else
         $text = '';
-    
-    $text = '<span class="elgg-icon elgg-icon-share">' . $text . '</span>';
+
+    $text = '<span class="elgg-icon fa fa-group">' . $text . '</span>';
 
     $item = ElggMenuItem::factory(array(
         'name' => 'yourgroups',
@@ -65,7 +65,7 @@ function yourgroups_topbar_menu_setup ($hook, $type, $return, $params) {
     ));
 
     $return[] = $item;
-    return $return;    
+    return $return;
 }
 
 /**
@@ -73,21 +73,21 @@ function yourgroups_topbar_menu_setup ($hook, $type, $return, $params) {
  *
  * @return String or false;
  */
- 
+
 function get_alpha_group_list($viewer) {
     if (!$viewer)
         $viewer = elgg_get_logged_in_user_entity();
-    $groups = $viewer->getGroups(null,0);
+    $groups = $viewer->getGroups(array('limit'=>0),0);
     if ($groups)
     {
         $count = count($groups);
         if ($count > 1)
             $groups = casort($groups, "name");
-            
+
         return $groups;
     }
     else
-        return false;    
+        return false;
 }
 
 /**
@@ -95,7 +95,7 @@ function get_alpha_group_list($viewer) {
  *
  * @return String or false;
  */
-  
+
 function casort($arr, $var) {
    $tarr = array();
    $rarr = array();
@@ -112,7 +112,7 @@ function casort($arr, $var) {
    }
 
    return $rarr;
-} 
+}
 
 /**
  * page handler for yourgroups menu
@@ -121,7 +121,7 @@ function casort($arr, $var) {
  * @param array $page Array of URL segments
  * @return bool Was the page handled successfully
  */
- 
+
 function yourgroups_page_handler ($page) {
     gatekeeper();
 

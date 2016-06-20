@@ -8,7 +8,7 @@ if ($groups)
     foreach ($groups as $group) {
         $group_GUID = $group->getGUID();
         $body .= '<li onClick="window.location.href=\''. elgg_get_site_url() .'groups/profile/' . $group_GUID . '\';">'.elgg_view('output/url', array('href' => "groups/profile/$group_GUID",'text' => $group->name,   'is_trusted' => true,)).'</a></li>';
-    }   
+    }
     $body .= '</ul>';
 }
 else
@@ -24,7 +24,7 @@ if ($invitation_count > 0)
         // Don't allow the counter to grow endlessly
         $invitation_count = '99999+';
     }
-    $invite_text = elgg_echo('groups:invitations:pending',array($invitation_count)) . ' ' .  elgg_view_icon('mail'); 
+    $invite_text = elgg_echo('groups:invitations:pending',array($invitation_count)) . ' ' .  elgg_view_icon('mail');
     $user = elgg_get_logged_in_user_entity();
     $username = $user->username;
     $body .= '<hr>';
@@ -33,4 +33,4 @@ if ($invitation_count > 0)
                                            'id' => 'yourgroups-invites',
                                            'is_trusted' => true,));
 }
-echo $body; 
+echo $body;
